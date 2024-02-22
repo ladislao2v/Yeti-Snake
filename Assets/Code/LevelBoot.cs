@@ -70,7 +70,10 @@ namespace Code
             _gameOverWindow.Construct(_sceneLoaderService);
 
             if (_gameType == GameType.Challenge)
-                _timer.Start();
+            {
+                _pauseService.Add(_timer);
+                _timer.Start();   
+            }
         }
 
         private void OnEnable()
