@@ -1,4 +1,6 @@
-﻿using Code.Services.InputService;
+﻿using Assets.Code.Services.AudioService;
+using Code.Services.AudioService;
+using Code.Services.InputService;
 using Code.Services.LevelService;
 using Code.Services.MapService;
 using Code.Services.PauseService;
@@ -32,15 +34,24 @@ namespace Code
         [SerializeField] private SettingsWindow _settingsWindow;
         [SerializeField] private GameOverWindow _gameOverWindow;
 
+        [Header("Sound")]
+        [SerializeField] private SoundProvider[] _soundProviders;
+
         private IInputService _inputService;
         private IScoreService _scoreService;
         private ISceneLoaderService _sceneLoaderService;
         private ILevelService _levelService;
         private IPauseService _pauseService;
         private IRecordService _recordService;
+        private IAudioService _audioService;
         
         private void Awake()
         {
+            _audioService = new AudioService();
+
+            foreach (var soundProvider in _soundProviders) 
+                _audioService.AddSource(soundProvider);
+
             _recordService = new RecordService();
             _recordService.Load();
             
