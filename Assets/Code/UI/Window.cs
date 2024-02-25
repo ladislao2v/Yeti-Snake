@@ -2,6 +2,7 @@
 
 namespace Code.UI
 {
+    [RequireComponent(typeof(Canvas))]
     public abstract class Window : MonoBehaviour
     {
         public void Show()

@@ -2,7 +2,8 @@
 {
     public interface IAudioService
     {        
+        public float Current { get; }
         void AddSource(IAudioSource audioSource);
-        void ChangeVolume(int value);
+        void ChangeVolume(float value);
     }
 }

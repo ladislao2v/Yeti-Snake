@@ -20,8 +20,6 @@ namespace Code.UI.Game
         {
             _scoreService = scoreService;
         }
-        
-        
 
         private void OnEnable()
         {

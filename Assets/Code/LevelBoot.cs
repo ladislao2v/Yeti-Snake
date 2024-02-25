@@ -1,4 +1,6 @@
 ﻿using Assets.Code.Services.AudioService;
+using Assets.Code.Services.UserService;
+using Assets.Code.UI.Elements;
 using Code.Services.AudioService;
 using Code.Services.InputService;
 using Code.Services.LevelService;
@@ -28,14 +30,11 @@ namespace Code
         [SerializeField] private Body _body;
         [SerializeField] private Yetis _yetis;
 
-        [Header("UI")] 
+        [Header("UI")]
         [SerializeField] private GameplayWindow _gameplayWindow;
         [SerializeField] private PauseWindow _pauseWindow;
         [SerializeField] private SettingsWindow _settingsWindow;
         [SerializeField] private GameOverWindow _gameOverWindow;
-
-        [Header("Sound")]
-        [SerializeField] private SoundProvider[] _soundProviders;
 
         private IInputService _inputService;
         private IScoreService _scoreService;
@@ -44,41 +43,49 @@ namespace Code
         private IPauseService _pauseService;
         private IRecordService _recordService;
         private IAudioService _audioService;
+        private IUserService _userService;
         
         private void Awake()
         {
             _audioService = new AudioService();
 
-            foreach (var soundProvider in _soundProviders) 
-                _audioService.AddSource(soundProvider);
+            var providers = FindObjectsOfType<SoundProvider>();
 
+            if (providers.Length > 0)
+            {
+                foreach (var provider in providers)
+                {
+                    _audioService.AddSource(provider);
+                }
+            }
+
+            _userService = new UserService();
             _recordService = new RecordService();
-            _recordService.Load();
-            
             _scoreService = new ScoreService(_recordService, _gameType);
             _sceneLoaderService = new SceneLoaderService();
             _levelService = new LevelService(_sceneLoaderService);
-            
-            _yetis.Construct(_levelService, _mapService);
+            _pauseService = new PauseService();
 
+            _yetis.Construct(_levelService, _mapService);
 
             _snake.Construct(_mapService, _scoreService, _yetis);
             _body.Construct(_mapService);
             _inputService = new InputService(_swipeHandler, _snake);
             _inputService.Enable();
 
-            _pauseService = new PauseService();
             _pauseService.Add(_snake);
+            _pauseService.Add(_inputService);
             
             _gameplayWindow.Construct(_scoreService);
             
             if(_gameplayWindow is ChallengeGameplayWindow challengeGameplayWindow)
                 challengeGameplayWindow.Construct(_recordService, _timer);
             
-            _gameplayWindow.Show();
             _pauseWindow.Construct(_pauseService, _sceneLoaderService);
-            _settingsWindow.Construct(_pauseService);
+            _settingsWindow.Construct(_audioService, _userService, _pauseService);
             _gameOverWindow.Construct(_sceneLoaderService);
+
+            _gameplayWindow.Show();
 
             if (_gameType == GameType.Challenge)
             {

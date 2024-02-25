@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Services.RecordService
 {
@@ -8,6 +8,11 @@ namespace Code.Services.RecordService
         private int _record;
 
         public int Record => _record;
+
+        public RecordService()
+        {
+            _record = PlayerPrefs.GetInt(RecordKey);
+        }
         
         public void TryUpdateRecord(int score)
         {
@@ -17,11 +22,6 @@ namespace Code.Services.RecordService
             _record = score;
 
             Save();
-        }
-
-        public void Load()
-        {
-            _record = PlayerPrefs.GetInt(RecordKey);
         }
 
         private void Save()

@@ -2,6 +2,6 @@
 {
     public interface IAudioSource
     {
-        void ChangeVolume(int value);
+        void ChangeVolume(float value);
     }
 }

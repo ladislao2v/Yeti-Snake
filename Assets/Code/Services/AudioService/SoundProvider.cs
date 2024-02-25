@@ -1,22 +1,19 @@
 ﻿using Code.Services.AudioService;
-using System;
 using UnityEngine;
 
 namespace Assets.Code.Services.AudioService
 {
-    [RequireComponent(typeof(AudioSource))]
     public abstract class SoundProvider : MonoBehaviour, IAudioSource
     {
+        [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip _clip;
-
-        private AudioSource _audioSource;
 
         private void Awake()
         {
-            _audioSource = GetComponent<AudioSource>();
+            _audioSource ??= GetComponent<AudioSource>();
         }
 
-        public void ChangeVolume(int value)
+        public void ChangeVolume(float value)
         {
             _audioSource.volume = value;
         }

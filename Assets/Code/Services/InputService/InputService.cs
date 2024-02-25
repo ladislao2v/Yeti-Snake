@@ -23,5 +23,15 @@ namespace Code.Services.InputService
         {
             _swipeHandler.Swiped -= _snake.Move;
         }
+
+        public void OnPause()
+        {
+            Disable();
+        }
+
+        public void OnResume()
+        {
+            Enable();
+        }
     }
 }

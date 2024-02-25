@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.Code.Services.AudioService;
+using UnityEngine;
 
-namespace Assets.Code.Services.AudioService.Sources
+namespace Code.Services.AudioService.Sources
 {
     public class BackgroundMusic : SoundProvider
     {
